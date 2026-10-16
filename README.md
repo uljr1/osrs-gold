@@ -31,8 +31,10 @@ payment methods, contact info, Firebase keys. One file, plain values.
 1. Create a public repo (e.g. `uljr1/osrs-gold`), upload all files keeping the folder structure.
 2. Repo **Settings → Pages** → Deploy from branch → `main` / `(root)` → Save.
 3. Live at `https://uljr1.github.io/osrs-gold/` in ~1 minute.
-4. Custom domain: the `CNAME` file points Pages at `oggold.us.eu.org`. Point the domain's DNS
-   (CNAME → `uljr1.github.io`) at your DNS host and GitHub provisions HTTPS automatically.
+4. Custom domain: once eu.org approves `oggold.us.eu.org`, re-add a `CNAME` file containing
+   exactly `oggold.us.eu.org` to the repo root — Pages picks it up automatically and provisions
+   HTTPS once DNS resolves. (The CNAME was removed 2026-10-16 so the github.io URL keeps serving
+   the site until the domain is approved.) DNS: CNAME `oggold.us.eu.org` → `uljr1.github.io` (already set in Cloudflare).
 
 ## Notes
 - Wallet addresses are intentionally NOT published on the site — the agent shares the
