@@ -1,4 +1,4 @@
-/* ULJR Gold — buy/sell order pages: calculator + ticket creation */
+/* OG Gold — buy/sell order pages: calculator + ticket creation */
 (() => {
   const $ = id => document.getElementById(id);
   const page = document.body.dataset.page; // 'buy' | 'sell'
@@ -37,6 +37,14 @@
         updateTotal();
       });
     }
+    // carry over an amount chosen on the homepage (buy.html?m=250)
+    try {
+      const qm = parseFloat(new URLSearchParams(location.search).get("m"));
+      if (!isNaN(qm) && qm >= 1) {
+        $("mAmount").value = Math.min(1000000, Math.floor(qm));
+        $("mAmount").dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    } catch (e) { /* ignore bad query strings */ }
     updateTotal();
     $("orderForm").addEventListener("submit", submit);
   }
