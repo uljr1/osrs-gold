@@ -1,9 +1,9 @@
 /* ============================================================
-   ULJR Gold — site configuration
+   OG Gold — site configuration
    Edit these values to rebrand / reprice / go live.
    ============================================================ */
 const CONFIG = {
-  BRAND: "ULJR Gold",
+  BRAND: "OG Gold",
   TAGLINE: "Fast, safe OSRS gold — delivered in minutes",
 
   // ---- Pricing (USD per 1M OSRS gold) ----
