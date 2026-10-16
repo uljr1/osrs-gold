@@ -49,6 +49,26 @@
   </div>
 
   <section class="block">
+    <h2>Quick calculator</h2>
+    <div class="calc">
+      <label for="homeM">Drag to choose how many millions (M)</label>
+      <input id="homeM" type="range" min="10" max="10000" step="10" value="100" aria-label="Gold amount slider" />
+      <div class="slider-labels"><span>10M</span><span>10,000M</span></div>
+      <div class="out">
+        <div style="display:flex; justify-content:space-around; gap:12px; flex-wrap:wrap">
+          <div><div class="amt" id="homeBuyOut">$21.50</div><div class="sub">to buy <span id="homeMAmt">100</span>M</div></div>
+          <div><div class="amt" id="homeSellOut" style="color:var(--green)">$17.92</div><div class="sub">to sell <span id="homeMAmt2">100</span>M</div></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; margin-top:18px; flex-wrap:wrap; justify-content:center">
+        <a class="btn" id="homeBuyBtn" href="buy.html?m=100">Buy 100M</a>
+        <a class="btn ghost" id="homeSellBtn" href="sell.html?m=100">Sell 100M</a>
+      </div>
+      <div class="hint" style="margin-top:10px; text-align:center; color:var(--muted); font-size:.85rem">Your amount carries over — the total on the next page updates automatically.</div>
+    </div>
+  </section>
+
+  <section class="block">
     <h2>How it works</h2>
     <div class="steps">
       <div class="step"><div class="n">1</div><h3>Place your order</h3><p>Enter your RSN and how many millions you want to buy or sell. Takes 30 seconds.</p></div>
@@ -86,6 +106,28 @@
   <div><a href="buy.html">Buy Gold</a> · <a href="sell.html">Sell Gold</a> · <a href="track.html">Track Order</a></div>
   <div class="fine">OG Gold is an independent trading service and is not affiliated with, endorsed by, or connected to Jagex Ltd. Old School RuneScape is a registered trademark of Jagex Ltd. Trade responsibly.</div>
 </div></footer>
+
+<script src="assets/js/config.js"></script>
+<script>
+(function () {
+  var s = document.getElementById("homeM");
+  if (!s || typeof CONFIG === "undefined") return;
+  function fmt(n) { return "$" + n.toFixed(2); }
+  function upd() {
+    var m = parseFloat(s.value) || 0;
+    var ms = m.toLocaleString("en-US");
+    document.getElementById("homeMAmt").textContent = ms;
+    document.getElementById("homeMAmt2").textContent = ms;
+    document.getElementById("homeBuyOut").textContent = fmt(m * CONFIG.BUY_PRICE_PER_M);
+    document.getElementById("homeSellOut").textContent = fmt(m * CONFIG.SELL_PRICE_PER_M);
+    var b = document.getElementById("homeBuyBtn"), sl = document.getElementById("homeSellBtn");
+    b.href = "buy.html?m=" + m; b.textContent = "Buy " + ms + "M";
+    sl.href = "sell.html?m=" + m; sl.textContent = "Sell " + ms + "M";
+  }
+  s.addEventListener("input", upd);
+  upd();
+})();
+</script>
 
 </body>
 </html>
