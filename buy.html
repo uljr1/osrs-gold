@@ -27,6 +27,8 @@
     <div class="calc" style="margin-bottom:18px">
       <label for="mAmount">How many millions (M)?</label>
       <input id="mAmount" type="number" min="1" step="1" value="100" inputmode="numeric" />
+      <input id="mSlider" type="range" min="10" max="10000" step="10" value="100" aria-label="Gold amount slider" />
+      <div class="slider-labels"><span>10M min</span><span>10,000M max</span></div>
       <div class="out">
         <div class="amt" id="totalOut">$21.50</div>
         <div class="sub" id="rateLine"></div>
