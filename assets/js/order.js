@@ -56,7 +56,10 @@
 
   function updateTotal() {
     const m = mValue();
-    $("totalOut").textContent = money(m * price);
+    const total = money(m * price);
+    $("totalOut").textContent = total;
+    const t2 = $("totalOut2");
+    if (t2) t2.textContent = total;
     $("rateLine").textContent =
       `${m.toLocaleString()}M × $${price}/M${m < minM && m > 0 ? ` (min ${minM}M)` : ""}`;
     const slider = $("mSlider");
