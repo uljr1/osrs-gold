@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sell OSRS Gold — $0.1792/M | ULJR Gold</title>
+<meta name="description" content="Sell your OSRS gold at $0.1792 per million. Paid in crypto, PayPal or Cash App. Fast, secure, 24/7 live chat." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23f5c542'/><text x='50' y='66' font-size='52' text-anchor='middle' font-weight='900' fill='%233a2c00'>G</text></svg>" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="sell">
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html"><span class="coin">G</span> ULJR Gold</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="buy.html">Buy Gold</a>
+    <a href="sell.html" class="active">Sell Gold</a>
+    <a href="track.html">Track Order</a>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <section class="block">
+    <h2>Sell OSRS Gold — <span style="color:var(--green)">$0.1792/M</span></h2>
+
+    <div class="calc" style="margin-bottom:18px">
+      <label for="mAmount">How many millions (M)?</label>
+      <input id="mAmount" type="number" min="1" step="1" value="100" inputmode="numeric" />
+      <div class="out">
+        <div class="amt" id="totalOut" style="color:var(--green)">$17.92</div>
+        <div class="sub" id="rateLine"></div>
+      </div>
+    </div>
+
+    <form class="form" id="orderForm" novalidate>
+      <label for="rsn">RuneScape username (RSN)</label>
+      <input id="rsn" type="text" maxlength="40" placeholder="e.g. xX_dragon_Xx" autocomplete="off" />
+
+      <div class="row2">
+        <div>
+          <label for="payMethod">How should we pay you?</label>
+          <select id="payMethod"></select>
+        </div>
+        <div>
+          <label for="contact">Discord or email</label>
+          <input id="contact" type="text" maxlength="80" placeholder="e.g. user#1234 or you@mail.com" />
+        </div>
+      </div>
+
+      <label for="payout">Your wallet address / PayPal / Cash App</label>
+      <input id="payout" type="text" maxlength="120" placeholder="Where we send your money" />
+      <div class="hint">Double-check this — payments sent to the wrong address can't be reversed.</div>
+
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" rows="2" maxlength="500" placeholder="Anything the agent should know?"></textarea>
+
+      <div class="total-bar"><span>You'll receive</span><span class="t" id="totalOut2" style="color:var(--green)">$17.92</span></div>
+      <div class="err" id="formErr"></div>
+      <button class="btn block" id="submitBtn" type="submit">Sell gold now</button>
+      <div class="hint" style="margin-top:10px">You trade us the gold in-game first, then we send your payment — all coordinated in live chat.</div>
+    </form>
+
+    <div class="success" id="successBox" style="display:none; margin-top:18px">
+      <h3 style="margin-top:0">✅ Ticket created!</h3>
+      <p id="successSummary"></p>
+      <div>Your ticket ID:</div>
+      <div><span class="tid" id="ticketId"></span><button class="btn small ghost copybtn" id="copyTid" type="button">Copy full ID</button></div>
+      <p style="color:var(--muted); font-size:.9rem">Live chat is opening now — our assistant will hold you for the next available agent. Save your ticket ID to track this sale later.</p>
+      <a class="btn ghost small" href="track.html">Track order</a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  <div class="fine">ULJR Gold is not affiliated with Jagex Ltd. We never ask for your account password.</div>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/chat.js"></script>
+<script src="assets/js/order.js"></script>
+<script>
+  document.getElementById("mAmount").addEventListener("input", () => {
+    document.getElementById("totalOut2").textContent = document.getElementById("totalOut").textContent;
+  });
+</script>
+</body>
+</html>

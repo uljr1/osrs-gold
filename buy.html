@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Buy OSRS Gold — $0.215/M | ULJR Gold</title>
+<meta name="description" content="Buy OSRS gold at $0.215 per million. Fast in-game delivery, secure payment, 24/7 live chat." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23f5c542'/><text x='50' y='66' font-size='52' text-anchor='middle' font-weight='900' fill='%233a2c00'>G</text></svg>" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="buy">
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html"><span class="coin">G</span> ULJR Gold</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="buy.html" class="active">Buy Gold</a>
+    <a href="sell.html">Sell Gold</a>
+    <a href="track.html">Track Order</a>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <section class="block">
+    <h2>Buy OSRS Gold — <span style="color:var(--gold)">$0.215/M</span></h2>
+
+    <div class="calc" style="margin-bottom:18px">
+      <label for="mAmount">How many millions (M)?</label>
+      <input id="mAmount" type="number" min="1" step="1" value="100" inputmode="numeric" />
+      <div class="out">
+        <div class="amt" id="totalOut">$21.50</div>
+        <div class="sub" id="rateLine"></div>
+      </div>
+    </div>
+
+    <form class="form" id="orderForm" novalidate>
+      <label for="rsn">RuneScape username (RSN)</label>
+      <input id="rsn" type="text" maxlength="40" placeholder="e.g. xX_dragon_Xx" autocomplete="off" />
+
+      <div class="row2">
+        <div>
+          <label for="payMethod">Payment method</label>
+          <select id="payMethod"></select>
+          <div class="hint">The agent shares the payment address in live chat.</div>
+        </div>
+        <div>
+          <label for="contact">Discord or email</label>
+          <input id="contact" type="text" maxlength="80" placeholder="e.g. user#1234 or you@mail.com" />
+        </div>
+      </div>
+
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" rows="2" maxlength="500" placeholder="Anything the agent should know?"></textarea>
+
+      <div class="total-bar"><span>Total</span><span class="t" id="totalOut2">$21.50</span></div>
+      <div class="err" id="formErr"></div>
+      <button class="btn block" id="submitBtn" type="submit">Buy gold now</button>
+      <div class="hint" style="margin-top:10px">Placing the order opens live chat instantly — no payment taken on this page.</div>
+    </form>
+
+    <div class="success" id="successBox" style="display:none; margin-top:18px">
+      <h3 style="margin-top:0">✅ Order placed!</h3>
+      <p id="successSummary"></p>
+      <div>Your ticket ID:</div>
+      <div><span class="tid" id="ticketId"></span><button class="btn small ghost copybtn" id="copyTid" type="button">Copy full ID</button></div>
+      <p style="color:var(--muted); font-size:.9rem">Live chat is opening now — our assistant will hold you for the next available agent. Save your ticket ID to track this order later.</p>
+      <a class="btn ghost small" href="track.html">Track order</a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  <div class="fine">ULJR Gold is not affiliated with Jagex Ltd. We never ask for your account password.</div>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/chat.js"></script>
+<script src="assets/js/order.js"></script>
+<script>
+  // keep both totals in sync
+  document.getElementById("mAmount").addEventListener("input", () => {
+    document.getElementById("totalOut2").textContent = document.getElementById("totalOut").textContent;
+  });
+</script>
+</body>
+</html>

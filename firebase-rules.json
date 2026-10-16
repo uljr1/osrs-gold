@@ -1,0 +1,50 @@
+{
+  "rules": {
+    "tickets": {
+      // Admin (logged in via Firebase Authentication) can list all tickets.
+      ".read": "auth != null",
+      ".indexOn": ["createdAt", "status"],
+
+      "$ticketId": {
+        // Anyone with the unguessable ticket ID can read that one ticket
+        // (this is how customers open their own chat).
+        ".read": true,
+
+        // Anyone can CREATE a ticket (a new order), but not overwrite one.
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['type', 'rsn', 'mAmount', 'totalUsd', 'status', 'createdAt'])",
+
+        // Only a logged-in admin can change the status
+        // (pending -> active -> closed). Customers cannot accept/close
+        // their own tickets.
+        "status": {
+          ".write": "auth != null && newData.isString()",
+          ".validate": "newData.val() === 'pending' || newData.val() === 'active' || newData.val() === 'closed'"
+        },
+
+        // Anyone may set the bot-greeted flag to true (the customer's own
+        // browser sets it right after the assistant greeting is sent).
+        // Only boolean true is accepted, so it can't be abused.
+        "botGreeted": {
+          ".write": "newData.val() === true",
+          ".validate": "newData.isBoolean()"
+        },
+
+        // Anyone with the ticket ID can append chat messages
+        // (customer + agent both write here).
+        "messages": {
+          "$msgId": {
+            ".write": "!data.exists() && newData.exists()",
+            ".validate": "newData.hasChildren(['from', 'text', 'ts']) && newData.child('text').isString() && newData.child('text').val().length <= 2000"
+          }
+        },
+
+        // Field-level validation for new tickets.
+        "type":     { ".validate": "newData.val() === 'buy' || newData.val() === 'sell'" },
+        "rsn":      { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 40" },
+        "mAmount":  { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 1000000" },
+        "totalUsd": { ".validate": "newData.isNumber() && newData.val() >= 0" }
+      }
+    }
+  }
+}

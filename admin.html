@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Ticket Dashboard | ULJR Gold</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23f5c542'/><text x='50' y='66' font-size='52' text-anchor='middle' font-weight='900' fill='%233a2c00'>G</text></svg>" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html"><span class="coin">G</span> ULJR Gold <span style="color:var(--muted);font-weight:400;font-size:.9rem">/ admin</span></a>
+  <div class="nav-links"><button class="btn small ghost" id="logoutBtn" style="display:none">Log out</button></div>
+</div></nav>
+
+<div class="wrap">
+  <!-- login -->
+  <div class="form login-card" id="loginCard" style="display:none">
+    <h2 style="margin-top:0">Agent login</h2>
+    <form id="loginForm">
+      <label for="loginEmail">Email</label>
+      <input id="loginEmail" type="email" autocomplete="username" />
+      <label for="loginPass">Password</label>
+      <input id="loginPass" type="password" autocomplete="current-password" />
+      <div class="err" id="loginErr"></div>
+      <button class="btn block" type="submit" style="margin-top:14px">Log in</button>
+    </form>
+    <div class="hint" style="margin-top:10px">This is the admin user you create in Firebase Authentication (see FIREBASE_SETUP.md).</div>
+  </div>
+
+  <!-- not configured yet -->
+  <div id="setupNotice" style="display:none; max-width:640px; margin:40px auto">
+    <div class="demo-banner">🧪 <b>Demo mode.</b> The Firebase backend isn't connected yet, so this dashboard shows test tickets stored in this browser only.</div>
+    <h2>Connect the live backend</h2>
+    <ol style="color:var(--muted)">
+      <li>Create a free Firebase project (5 min on your phone) — steps in <b>FIREBASE_SETUP.md</b>.</li>
+      <li>Paste the web config into <b>assets/js/config.js</b>.</li>
+      <li>Create your admin user in Firebase Authentication.</li>
+      <li>Reload this page and log in — new customer orders will appear here in real time.</li>
+    </ol>
+    <button class="btn" id="demoEnter" type="button">Preview dashboard with demo tickets</button>
+  </div>
+
+  <!-- dashboard -->
+  <div id="adminUI" style="display:none">
+    <div style="display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap">
+      <h2 style="margin:0">Tickets</h2>
+      <span class="time" id="countLine"></span>
+      <select id="filterStatus" style="margin-left:auto; padding:8px 12px; border-radius:8px; background:var(--bg2); color:var(--text); border:1px solid var(--line)">
+        <option value="pending">Pending</option>
+        <option value="active">Active</option>
+        <option value="closed">Closed</option>
+        <option value="all">All</option>
+      </select>
+    </div>
+    <div class="admin-shell">
+      <div class="ticket-list" id="ticketList"></div>
+      <div class="admin-chat" id="chatPane" style="display:none">
+        <div class="chat-head">
+          <div class="av">💬</div>
+          <div><div class="tt" id="detailTitle"></div><div class="st" id="detailMeta"></div></div>
+        </div>
+        <div class="msgs" id="adminMsgs"></div>
+        <div class="canned" id="canned"></div>
+        <div class="admin-actions">
+          <button class="btn small" id="acceptBtn" type="button">✅ Accept ticket</button>
+          <button class="btn small ghost" id="closeBtn" type="button">Close ticket</button>
+        </div>
+        <div class="chat-input">
+          <input id="msgInput" type="text" placeholder="Reply as agent…" maxlength="2000" />
+          <button id="sendBtn" type="button">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const b = document.getElementById("demoEnter");
+    if (b) b.onclick = () => {
+      // seed two demo tickets so the dashboard preview isn't empty
+      DB.createTicket({ type: "buy", rsn: "DemoBuyer", mAmount: 250, totalUsd: 53.75, pricePerM: 0.215, payMethod: "btc", contact: "demo@buyer.com" })
+        .then(id => DB.sendMessage(id, "customer", "Hi, just placed a 250M order — how do I pay?"));
+      DB.createTicket({ type: "sell", rsn: "DemoSeller", mAmount: 500, totalUsd: 89.6, pricePerM: 0.1792, payMethod: "usdt", payout: "TV9demo…", contact: "demo@seller.com" });
+      document.getElementById("setupNotice").style.display = "none";
+      document.getElementById("adminUI").style.display = "block";
+    };
+    const lo = document.getElementById("logoutBtn");
+    DB.onAuth(u => { lo.style.display = u ? "" : "none"; });
+  });
+</script>
+</body>
+</html>

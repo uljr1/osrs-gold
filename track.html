@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Track Order | ULJR Gold</title>
+<meta name="description" content="Track your ULJR Gold order with your ticket ID and continue the live chat." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23f5c542'/><text x='50' y='66' font-size='52' text-anchor='middle' font-weight='900' fill='%233a2c00'>G</text></svg>" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html"><span class="coin">G</span> ULJR Gold</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="buy.html">Buy Gold</a>
+    <a href="sell.html">Sell Gold</a>
+    <a href="track.html" class="active">Track Order</a>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <section class="block">
+    <h2>Track your order</h2>
+    <div class="form" style="margin-bottom:18px">
+      <label for="trackId">Ticket ID</label>
+      <input id="trackId" type="text" placeholder="Paste your full ticket ID" autocomplete="off" />
+      <div class="hint">You got this ID right after placing your order (e.g. in the confirmation box).</div>
+      <div class="err" id="trackErr"></div>
+      <button class="btn block" id="trackBtn" type="button" style="margin-top:14px">Open my chat</button>
+    </div>
+    <div class="form" id="trackSummary" style="display:none"></div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  <div class="fine">ULJR Gold is not affiliated with Jagex Ltd.</div>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/chat.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  async function open() {
+    $("trackErr").textContent = "";
+    const id = $("trackId").value.trim();
+    if (!id) { $("trackErr").textContent = "Paste your ticket ID first."; return; }
+    $("trackBtn").disabled = true; $("trackBtn").textContent = "Looking up…";
+    try {
+      const t = await DB.getTicket(id);
+      if (!t) { $("trackErr").textContent = "Ticket not found — check the ID and try again."; return; }
+      const s = $("trackSummary");
+      s.style.display = "block";
+      s.innerHTML = `<b>${t.type === "buy" ? "Buying" : "Selling"} ${Number(t.mAmount).toLocaleString()}M</b>
+        for $${Number(t.totalUsd).toFixed(2)} · RSN <b>${t.rsn.replace(/[<>&]/g,"")}</b><br>
+        <span class="status-pill ${t.status}">${t.status}</span>
+        <span class="time"> · opened ${new Date(t.createdAt).toLocaleString()}</span>`;
+      Chat.attach(id, { autoGreet: false });
+    } finally {
+      $("trackBtn").disabled = false; $("trackBtn").textContent = "Open my chat";
+    }
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    DB.init();
+    $("trackBtn").onclick = open;
+    $("trackId").addEventListener("keydown", e => { if (e.key === "Enter") open(); });
+    const q = new URLSearchParams(location.search).get("id");
+    if (q) { $("trackId").value = q; open(); }
+  });
+</script>
+</body>
+</html>
