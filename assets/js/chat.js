@@ -1,5 +1,5 @@
 /* ============================================================
-   ULJR Gold — customer live-chat widget
+   OG Gold — customer live-chat widget
    Opens automatically after an order is placed. A built-in
    assistant greets the customer and holds them until an agent
    accepts the ticket in admin.html.
@@ -9,6 +9,7 @@ const Chat = (() => {
   let offTicket = null, offMsgs = null;
   let lastBotReply = 0;
   let renderedIds = new Set();
+  let greetedTicket = null; // ticket id already greeted this session (set BEFORE the async greeting to kill re-entrant/duplicate greets)
   let els = {};
 
   const HOLD_MSG =
@@ -165,6 +166,7 @@ const Chat = (() => {
     renderedIds = new Set();
     els.msgs.innerHTML = "";
     ticketId = id;
+    greetedTicket = null;
 
     offTicket = DB.onTicket(id, t => {
       if (!t) {
@@ -173,7 +175,10 @@ const Chat = (() => {
         return;
       }
       renderStatus(t);
-      if (autoGreet && !t.botGreeted) botGreet(t);
+      if (autoGreet && !t.botGreeted && greetedTicket !== id) {
+        greetedTicket = id; // claim first: the greeting itself triggers this listener again
+        botGreet(t);
+      }
     });
     offMsgs = DB.onMessages(id, arr => arr.forEach(renderMsg));
     open();
