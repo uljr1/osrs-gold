@@ -29,6 +29,14 @@
     });
 
     $("mAmount").addEventListener("input", updateTotal);
+    const slider = $("mSlider");
+    if (slider) {
+      slider.min = minM; // keep slider floor in sync with config
+      slider.addEventListener("input", () => {
+        $("mAmount").value = slider.value;
+        updateTotal();
+      });
+    }
     updateTotal();
     $("orderForm").addEventListener("submit", submit);
   }
@@ -43,6 +51,11 @@
     $("totalOut").textContent = money(m * price);
     $("rateLine").textContent =
       `${m.toLocaleString()}M × $${price}/M${m < minM && m > 0 ? ` (min ${minM}M)` : ""}`;
+    const slider = $("mSlider");
+    if (slider && document.activeElement !== slider) {
+      const lo = parseFloat(slider.min) || 0, hi = parseFloat(slider.max) || 10000;
+      slider.value = Math.min(hi, Math.max(lo, m || lo));
+    }
   }
 
   function err(msg) { $("formErr").textContent = msg || ""; }
