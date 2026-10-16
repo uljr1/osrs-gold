@@ -1,4 +1,4 @@
-# ULJR Gold — OSRS gold buy/sell site
+# OG Gold — OSRS gold buy/sell site
 
 Live business site: customers buy OSRS gold at **$0.215/M** and sell at **$0.1792/M**.
 Orders open an instant live chat; a built-in assistant greets the customer and holds
@@ -31,6 +31,8 @@ payment methods, contact info, Firebase keys. One file, plain values.
 1. Create a public repo (e.g. `uljr1/osrs-gold`), upload all files keeping the folder structure.
 2. Repo **Settings → Pages** → Deploy from branch → `main` / `(root)` → Save.
 3. Live at `https://uljr1.github.io/osrs-gold/` in ~1 minute.
+4. Custom domain: the `CNAME` file points Pages at `oggold.us.eu.org`. Point the domain's DNS
+   (CNAME → `uljr1.github.io`) at your DNS host and GitHub provisions HTTPS automatically.
 
 ## Notes
 - Wallet addresses are intentionally NOT published on the site — the agent shares the

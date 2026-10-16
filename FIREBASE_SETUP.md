@@ -1,4 +1,4 @@
-# Firebase setup — ULJR Gold live backend (free)
+# Firebase setup — OG Gold live backend (free)
 
 This connects the site's order tickets + live chat. Takes about 5 minutes on your phone. All free (Firebase Spark plan).
 
